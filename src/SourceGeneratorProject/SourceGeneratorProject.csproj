@@ -16,7 +16,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\CodeAnalyzeUtility\CodeAnalyzeUtility.csproj" />
+		<ProjectReference Include="..\CodeAnalyzeUtilityGenerator\CodeAnalyzeUtilityGenerator.csproj">
+			<OutputItemType>Analyzer</OutputItemType>
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+		</ProjectReference>
 	</ItemGroup>
-
 </Project>

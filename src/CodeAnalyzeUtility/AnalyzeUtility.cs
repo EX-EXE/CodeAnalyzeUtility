@@ -24,37 +24,6 @@ namespace CodeAnalyzeUtility
             }
             return (false, string.Empty);
         }
-        public static bool GetArguments(this SyntaxReference syntaxReference)
-        {
-            var syntax = syntaxReference.GetSyntax();
-            if (syntax != null)
-            {
-                foreach (var equalsValueClauseSyntax in syntax.DescendantNodes().OfType<AttributeArgumentSyntax>())
-                {
-                    var a = equalsValueClauseSyntax.ToFullString();
-                    //return (true, equalsValueClauseSyntax.Value.ToFullString());
-                }
-            }
-            return true;
-            // return (false, string.Empty);
-        }
-        public static bool GetArguments(this ImmutableArray<SyntaxReference> syntaxReferences)
-        {
-            foreach (var syntaxReference in syntaxReferences)
-            {
-                var syntax = syntaxReference.GetSyntax();
-                if (syntax != null)
-                {
-                    foreach (var equalsValueClauseSyntax in syntax.DescendantNodes().OfType<AttributeArgumentSyntax>())
-                    {
-                        var a = equalsValueClauseSyntax.ToFullString();
-                        //return (true, equalsValueClauseSyntax.Value.ToFullString());
-                    }
-                }
-            }
-            return true;
-           // return (false, string.Empty);
-        }
 
         public static string ToTypeShortName(this ISymbol symbol,bool includeGenerics)
         {
