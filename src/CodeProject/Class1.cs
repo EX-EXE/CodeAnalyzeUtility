@@ -1,17 +1,8 @@
 ﻿using System;
 using SourceGeneratorProject;
-using TestNamespace;
 namespace CodeProject
 {
     [SourceGeneratorProject]
-
-    [Test<long>]
-    [Test2<long>(11,22)]
-    [SourceGeneratorTest]
-    [SourceGeneratorTest1(19)]
-    [SourceGeneratorTest2<int>(19)]
-    [SourceGeneratorTest3<long>(11)]
-    [SourceGeneratorTest4<char>(11)]
     public class TestClass1
     {
         public int intField = -100;

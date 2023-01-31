@@ -39,63 +39,6 @@ using System;
 internal sealed class SourceGeneratorProjectAttribute : Attribute
 {
 }
-
-
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-internal sealed class TestAttribute<T> : Attribute
-{
-}
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-internal sealed class TestAttribute2<T> : Attribute
-{
-    Test2Attribute(T test,int value)
-    {
-    }
-}
-
-
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-internal sealed class SourceGeneratorTestAttribute : Attribute
-{
-}
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-internal sealed class SourceGeneratorTest1Attribute : Attribute
-{
-    SourceGeneratorTest1Attribute(int value)
-    {
-    }
-}
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-internal sealed class SourceGeneratorTest2Attribute<T> : Attribute
-{
-    SourceGeneratorTest2Attribute<T>(T value)
-    {
-    }
-}
-
-namespace TestNamespace
-{
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-internal sealed class SourceGeneratorTest3Attribute<T> : Attribute
-{
-    SourceGeneratorTest3Attribute<T>(T value)
-    {
-    }
-}
-
-namespace TestNamespace2
-{
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-internal sealed class SourceGeneratorTest4Attribute<T> : Attribute
-{
-    SourceGeneratorTest3Attribute<T>(T value)
-    {
-    }
-}
-}
-
-}
-
 """);
         });
     }
