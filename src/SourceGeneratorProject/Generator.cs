@@ -39,18 +39,35 @@ using System;
 internal sealed class SourceGeneratorProjectAttribute : Attribute
 {
 }
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+internal sealed class GenericAttribute<T> : Attribute
+{
+    public GenericAttribute()
+    {}
+}
+
 """);
         });
     }
 
     public static void GenerateSource(SourceProductionContext context, GeneratorAttributeSyntaxContext source)
     {
+        var cancellationToken = context.CancellationToken;
         var semanticModel = source.SemanticModel;
         var typeSymbol = (INamedTypeSymbol)source.TargetSymbol;
         var enumNode = (ClassDeclarationSyntax)source.TargetNode;
 
-        var classInfo = AnalyzeClassInfo.Analyze(source.TargetSymbol);
+        var classInfo = AnalyzeClassInfo.Analyze(typeSymbol, cancellationToken);
+        var infos = classInfo.Attributes
+            .SelectMany(x => x.GenericTypes)
+            .Select(x => x.Symbol)
+            .OfType<INamedTypeSymbol>()
+            .Select(x => AnalyzeClassInfo.Analyze(x, cancellationToken)).ToArray();
 
+        foreach (var info in classInfo.GetAnalyzeInfos<AnalyzePropertyInfo>())
+        {
+
+        }
     }
 
 }

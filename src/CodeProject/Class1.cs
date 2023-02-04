@@ -2,15 +2,17 @@
 using SourceGeneratorProject;
 namespace CodeProject
 {
-    [SourceGeneratorProject]
+
+        [SourceGeneratorProject]
+    [GenericAttribute<TestClass1>]
     public class TestClass1
     {
         public int intField = -100;
         public string stringField = "stringField";
         private long longField = 100;
 
-        public int intProperty { get; set; } = int.MaxValue;
-        public string stringProperty { get; set; } = "stringProperty";
+        public int intProperty { get; private set; } = int.MaxValue;
+        public string stringProperty { get; private set; } = "stringProperty";
         private long longProperty { get; set; } = long.MinValue;
 
 
@@ -36,10 +38,21 @@ namespace CodeProject
 
         public class TestClass2
         {
-            public int intProperty { get; set; } = int.MaxValue;
-            public string stringProperty { get; set; } = "stringProperty";
+            public int intProperty { get; private set; } = int.MaxValue;
+            public string stringProperty { get; private set; } = "stringProperty";
             private long longProperty { get; set; } = long.MinValue;
         }
 
+    }
+
+    [SourceGeneratorProject]
+    public class TestBase1 : TestClass2
+    {
+    }
+
+    public class TestClass2
+    {
+        public int intField = -100;
+        public string stringField = "stringField";
     }
 }

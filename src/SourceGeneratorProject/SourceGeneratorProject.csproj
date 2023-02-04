@@ -16,9 +16,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\CodeAnalyzeUtility\CodeAnalyzeUtility.csproj" />
+	</ItemGroup>
+
+	<!--<ItemGroup>
 		<ProjectReference Include="..\CodeAnalyzeUtilityGenerator\CodeAnalyzeUtilityGenerator.csproj">
 			<OutputItemType>Analyzer</OutputItemType>
 			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
 		</ProjectReference>
-	</ItemGroup>
+		<ProjectReference Include="..\CodeAnalyzeUtility\CodeAnalyzeUtility.csproj" />
+	</ItemGroup>-->
 </Project>

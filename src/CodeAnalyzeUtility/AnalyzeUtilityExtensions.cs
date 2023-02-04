@@ -7,25 +7,9 @@ using System.Text;
 
 namespace CodeAnalyzeUtility
 {
-    public static class AnalyzeUtility
+    public static class AnalyzeUtilityExtensions
     {
-        public static (bool,string) GetDefaultValue(this ImmutableArray<SyntaxReference> syntaxReferences)
-        {
-            foreach(var syntaxReference in syntaxReferences)
-            {
-                var syntax = syntaxReference.GetSyntax();
-                if(syntax != null)
-                {
-                    foreach(var equalsValueClauseSyntax in syntax.DescendantNodes().OfType<EqualsValueClauseSyntax>())
-                    {
-                        return (true, equalsValueClauseSyntax.Value.ToFullString());
-                    }
-                }
-            }
-            return (false, string.Empty);
-        }
-
-        public static string ToTypeShortName(this ISymbol symbol,bool includeGenerics)
+        public static string ToTypeShortName(this ISymbol symbol, bool includeGenerics)
         {
             return symbol.ToDisplayString(new SymbolDisplayFormat(
                 globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.Omitted,
@@ -46,5 +30,36 @@ namespace CodeAnalyzeUtility
                     SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers |
                     SymbolDisplayMiscellaneousOptions.UseSpecialTypes));
         }
+        internal static string ToAccessibilityString<T>(this T symbol) where T : ISymbol
+        {
+            return symbol.DeclaredAccessibility switch
+            {
+                Accessibility.Private => "private",
+                Accessibility.ProtectedAndInternal => "protected internal",
+                //Accessibility.ProtectedAndFriend => "protected friend",
+                Accessibility.Protected => "protected",
+                Accessibility.Internal => "internal",
+                //Accessibility.Friend => "friend",
+                Accessibility.Public => "public",
+                _ => string.Empty,
+            };
+        }
+
+        internal static (bool,string) GetDefaultValue(this ImmutableArray<SyntaxReference> syntaxReferences)
+        {
+            foreach(var syntaxReference in syntaxReferences)
+            {
+                var syntax = syntaxReference.GetSyntax();
+                if(syntax != null)
+                {
+                    foreach(var equalsValueClauseSyntax in syntax.DescendantNodes().OfType<EqualsValueClauseSyntax>())
+                    {
+                        return (true, equalsValueClauseSyntax.Value.ToFullString());
+                    }
+                }
+            }
+            return (false, string.Empty);
+        }
+
     }
 }
