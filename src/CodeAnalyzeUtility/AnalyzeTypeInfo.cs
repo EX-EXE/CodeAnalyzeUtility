@@ -31,6 +31,12 @@ namespace CodeAnalyzeUtility
             {
                 ToTypedEnumerable<AnalyzeInfoType,AnalyzeTypeInfo>(this,cancellationToken),
             }.SelectMany(x => x);
+
+        public string GetNamespaceDefine()
+            => Symbol.ContainingNamespace.IsGlobalNamespace
+                ? string.Empty
+                : $"namespace {Namespace};";
+
         private AnalyzeTypeInfo(ISymbol symbol)
         {
             Symbol = symbol;
