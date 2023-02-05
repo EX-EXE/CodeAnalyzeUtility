@@ -76,7 +76,7 @@ namespace CodeAnalyzeUtility
         {
             var builder = new List<string>();
             // for
-            builder.Add($"for(int {variableName} = {start}; {variableName} < {end} ; ++{variableName})");
+            builder.Add($"for(int {variableName} = {start}; {variableName} < {end}; ++{variableName})");
             builder.Add("{");
             {
                 var lines = sectionLineFunc(variableName);
@@ -125,7 +125,7 @@ namespace CodeAnalyzeUtility
 
         public static string[] ForEachIndexLines<T>(this IEnumerable<T> values, Func<int, T, string> sectionLineFunc)
         {
-            return ForEachIndexLines<T>(values, (i,x) => new[] { sectionLineFunc(i,x) });
+            return ForEachIndexLines<T>(values, (i, x) => new[] { sectionLineFunc(i, x) });
         }
 
         public static string[] ForEachIndexLines<T>(this IEnumerable<T> values, Func<int, T, IEnumerable<string>> sectionLineFunc)
