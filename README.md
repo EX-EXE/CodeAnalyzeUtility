@@ -1,11 +1,18 @@
 [![NuGet version](https://badge.fury.io/nu/CodeAnalyzeUtilityGenerator.svg)](https://badge.fury.io/nu/CodeAnalyzeUtilityGenerator)
 
 # CodeAnalyzeUtility
-Utility for C# Source Generator
+Utility for C# Source Generator.
 
 ## How To Use
 ### Install by nuget
 PM> Install-Package [CodeAnalyzeUtilityGenerator](https://www.nuget.org/packages/CodeAnalyzeUtilityGenerator/)
+
+```
+// source(GeneratorAttributeSyntaxContext)
+var typeSymbol = (INamedTypeSymbol)source.TargetSymbol;
+var cancellationToken = context.CancellationToken;
+var classInfo = AnalyzeClassInfo.Analyze(typeSymbol, cancellationToken);
+```
 
 ### Sample
 ```
