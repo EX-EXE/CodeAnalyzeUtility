@@ -10,7 +10,10 @@ PM> Install-Package [CodeAnalyzeUtilityGenerator](https://www.nuget.org/packages
 ```
 // source(GeneratorAttributeSyntaxContext)
 var typeSymbol = (INamedTypeSymbol)source.TargetSymbol;
+
+// context(SourceProductionContext)
 var cancellationToken = context.CancellationToken;
+
 var classInfo = AnalyzeClassInfo.Analyze(typeSymbol, cancellationToken);
 ```
 
