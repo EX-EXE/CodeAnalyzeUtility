@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel;
+using System.Linq;
 using SourceGeneratorProject;
 namespace CodeProject
 {
@@ -12,10 +14,5 @@ namespace CodeProject
         public string stringProperty { get; private set; } = "stringProperty";
         [EnumFlag]
         private long longProperty { get; set; } = long.MinValue;
-
-        public TestClass1()
-        {
-
-        }
     }
 }
