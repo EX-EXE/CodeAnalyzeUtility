@@ -8,7 +8,7 @@ namespace CodeAnalyzeUtility
     {
         public INamedTypeSymbol Symbol { get; private set; }
         public AnalyzeTypeInfo Type { get; private set; }
-        public AnalyzeTypeInfo BaseType { get; private set; }
+        public AnalyzeTypeInfo? BaseType { get; private set; }
         public AnalyzeTypeInfo[] InterfaceTypes { get; private set; } = Array.Empty<AnalyzeTypeInfo>();
         public AnalyzeAttributeInfo[] Attributes { get; private set; } = Array.Empty<AnalyzeAttributeInfo>();
         public AnalyzeFieldInfo[] Fields { get; private set; } = Array.Empty<AnalyzeFieldInfo>();
@@ -19,15 +19,11 @@ namespace CodeAnalyzeUtility
         public static AnalyzeClassInfo Analyze<SymbolType>(SymbolType symbol, CancellationToken cancellationToken = default) where SymbolType : INamedTypeSymbol
         {
             cancellationToken.ThrowIfCancellationRequested();
-            if (symbol.BaseType == null)
-            {
-                throw new ArgumentNullException(nameof(symbol.BaseType));
-            }
 
             var result = new AnalyzeClassInfo(
                 symbol,
                 AnalyzeTypeInfo.Analyze(symbol, cancellationToken),
-                AnalyzeTypeInfo.Analyze(symbol.BaseType, cancellationToken));
+                symbol.BaseType != null ? AnalyzeTypeInfo.Analyze(symbol.BaseType, cancellationToken) : null);
 
             result.InterfaceTypes = symbol.Interfaces.Select(x => AnalyzeTypeInfo.Analyze(x, cancellationToken)).ToArray();
 
@@ -59,7 +55,7 @@ namespace CodeAnalyzeUtility
                 ToTypedRecursiveEnumerable<AnalyzeInfoType,AnalyzeClassInfo>(Classes,cancellationToken),
             }.SelectMany(x => x);
 
-        private AnalyzeClassInfo(INamedTypeSymbol symbol, AnalyzeTypeInfo type, AnalyzeTypeInfo baseType)
+        private AnalyzeClassInfo(INamedTypeSymbol symbol, AnalyzeTypeInfo type, AnalyzeTypeInfo? baseType)
         {
             Symbol = symbol;
             Type = type;

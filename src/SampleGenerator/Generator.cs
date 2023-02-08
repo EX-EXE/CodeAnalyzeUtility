@@ -1,7 +1,5 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
-using System;
-using System.Text;
 using CodeAnalyzeUtility;
 
 namespace SourceGeneratorProject;
@@ -45,17 +43,52 @@ internal sealed class EnumFlagAttribute : Attribute
 {
 }
 
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+internal sealed class TestAttribute : Attribute
+{
+    public TestAttribute(string name)
+    {
+    }
+}
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+internal sealed class Test2Attribute : Attribute
+{
+    public Test2Attribute(string[] name)
+    {
+    }
+}
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+internal sealed class Test3Attribute : Attribute
+{
+    public Test3Attribute(string? name)
+    {
+    }
+}
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+internal sealed class TestGenericAttribute<T> : Attribute
+{
+    public TestGenericAttribute(string name)
+    {
+    }
+}
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+internal sealed class TestGeneric2Attribute<T> : Attribute
+{
+    public TestGeneric2Attribute(string[] name)
+    {
+    }
+}
 """);
         });
     }
 
     public static void GenerateSource(SourceProductionContext context, GeneratorAttributeSyntaxContext source)
     {
-        var cancellationToken = context.CancellationToken;
         var semanticModel = source.SemanticModel;
-        var typeSymbol = (INamedTypeSymbol)source.TargetSymbol;
         var enumNode = (ClassDeclarationSyntax)source.TargetNode;
 
+        var typeSymbol = (INamedTypeSymbol)source.TargetSymbol;
+        var cancellationToken = context.CancellationToken;
         var classInfo = AnalyzeClassInfo.Analyze(typeSymbol, cancellationToken);
 
         var enumFlagMembers = classInfo.GetAnalyzeInfos<AnalyzePropertyInfo>()

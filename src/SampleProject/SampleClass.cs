@@ -6,7 +6,7 @@ using SourceGeneratorProject;
 namespace CodeProject
 {
     [HookAttribute]
-    public partial class TestClass1
+    public partial class SampleClass
     {
         [EnumFlag]
         public int intProperty { get; private set; } = int.MaxValue;

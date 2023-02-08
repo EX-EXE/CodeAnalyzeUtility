@@ -9,28 +9,48 @@ namespace CodeAnalyzeUtility
         public AttributeData Attribute { get; private set; }
         public AnalyzeTypeInfo Type { get; private set; }
         public AnalyzeTypeInfo[] GenericTypes { get; private set; } = Array.Empty<AnalyzeTypeInfo>();
-        public string[] Arguments { get; private set; } = Array.Empty<string>();
+        public string[] ArgumentStrings { get; private set; } = Array.Empty<string>();
+        public object?[] ArgumentObjects { get; private set; } = Array.Empty<object?>();
 
         public static AnalyzeAttributeInfo Analyze(AttributeData attributeData, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var attributeClass = attributeData.AttributeClass; 
+            var attributeClass = attributeData.AttributeClass;
             if (attributeClass == null)
             {
                 throw new ArgumentException($"{nameof(attributeData.AttributeClass)} is null.");
             }
             var result = new AnalyzeAttributeInfo(
-                attributeData, 
+                attributeData,
                 AnalyzeTypeInfo.Analyze(attributeClass, cancellationToken));
 
-            // Arguments
+
+            // ArgumentObjects
+            object? Convert(TypedConstant typedConstant)
+            {
+                if (typedConstant.Type != null)
+                {
+                    if (typedConstant.Type.Kind == SymbolKind.ArrayType)
+                    {
+                        return typedConstant.Values.Select(x => Convert(x)).ToArray();
+                    }
+                    else
+                    {
+                        return typedConstant.Value;
+                    }
+                }
+                return null;
+            }
+            result.ArgumentObjects = attributeData.ConstructorArguments.Select(x => Convert(x)).ToArray();
+
+            // ArgumentStrings
             var syntaxReference = attributeData.ApplicationSyntaxReference;
             if (syntaxReference != null)
             {
                 var attributeSyntax = syntaxReference.GetSyntax() as AttributeSyntax;
                 if (attributeSyntax != null && attributeSyntax.ArgumentList != null)
                 {
-                    result.Arguments = attributeSyntax.ArgumentList.DescendantNodes().OfType<AttributeArgumentSyntax>().Select(x => x.ToFullString()).ToArray();
+                    result.ArgumentStrings = attributeSyntax.ArgumentList.DescendantNodes().OfType<AttributeArgumentSyntax>().Select(x => x.ToFullString()).ToArray();
                 }
             }
 
