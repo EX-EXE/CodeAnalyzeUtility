@@ -13,17 +13,25 @@ namespace CodeAnalyzeUtility
         public string ShortNameWithGenerics { get; private set; } = string.Empty;
         public string FullName { get; private set; } = string.Empty;
         public string FullNameWithGenerics { get; private set; } = string.Empty;
+        public bool IsArrayType { get; private set; } = false;
 
         public static AnalyzeTypeInfo Analyze<SymbolType>(SymbolType symbol, CancellationToken cancellationToken = default) where SymbolType : ISymbol
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var result = new AnalyzeTypeInfo(symbol);
             if(symbol.Kind == SymbolKind.ArrayType && symbol is IArrayTypeSymbol arraySymbolType)
             {
-                return Analyze(arraySymbolType.ElementType, cancellationToken);
+                var result = Analyze(arraySymbolType.ElementType, cancellationToken);
+                result.IsArrayType = true;
+                result.ShortName += "[]";
+                result.ShortNameWithGenerics += "[]";
+                result.FullName += "[]";
+                result.FullNameWithGenerics += "[]";
+                return result;
             }
             else if (symbol.Kind == SymbolKind.NamedType)
             {
+                var result = new AnalyzeTypeInfo(symbol);
+                result.IsArrayType = false;
                 result.Namespace = symbol.ContainingNamespace.ToTypeFullName(true);
                 result.ShortName = symbol.ToTypeShortName(false);
                 result.ShortNameWithGenerics = symbol.ToTypeShortName(true);
