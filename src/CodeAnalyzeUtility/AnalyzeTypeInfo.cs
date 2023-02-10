@@ -18,12 +18,23 @@ namespace CodeAnalyzeUtility
         {
             cancellationToken.ThrowIfCancellationRequested();
             var result = new AnalyzeTypeInfo(symbol);
-            result.Namespace = symbol.ContainingNamespace.ToTypeFullName(true);
-            result.ShortName = symbol.ToTypeShortName(false);
-            result.ShortNameWithGenerics = symbol.ToTypeShortName(true);
-            result.FullName = symbol.ToTypeFullName(false);
-            result.FullNameWithGenerics = symbol.ToTypeFullName(true);
-            return result;
+            if(symbol.Kind == SymbolKind.ArrayType && symbol is IArrayTypeSymbol arraySymbolType)
+            {
+                return Analyze(arraySymbolType.ElementType, cancellationToken);
+            }
+            else if (symbol.Kind == SymbolKind.NamedType)
+            {
+                result.Namespace = symbol.ContainingNamespace.ToTypeFullName(true);
+                result.ShortName = symbol.ToTypeShortName(false);
+                result.ShortNameWithGenerics = symbol.ToTypeShortName(true);
+                result.FullName = symbol.ToTypeFullName(false);
+                result.FullNameWithGenerics = symbol.ToTypeFullName(true);
+                return result;
+            }
+            else
+            {
+                throw new ArgumentException(nameof(symbol));
+            }
         }
 
         public override IEnumerable<AnalyzeInfoType> GetAnalyzeInfos<AnalyzeInfoType>(CancellationToken cancellationToken = default)

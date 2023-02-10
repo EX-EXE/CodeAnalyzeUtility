@@ -1,13 +1,24 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using SourceGeneratorProject;
+using static CodeProject.TestClass1;
+
 namespace CodeProject
 {
     [HookAttribute]
     public partial class TestClass1
     {
+        public class TestData : ITestInterface
+        {
+            public ITestInterface[] Wheres { get; set; } = Array.Empty<ITestInterface>();
+            public int intProperty { get; private set; } = int.MaxValue;
+        }
+
+
+
         public interface ITestInterface { }
 
         [TestGeneric<int>(nameof(longProperty))]
