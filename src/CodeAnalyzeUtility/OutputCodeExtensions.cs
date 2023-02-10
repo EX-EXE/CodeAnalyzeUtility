@@ -13,11 +13,14 @@ namespace CodeAnalyzeUtility
         {
             return lines.Replace("\r\n", "\n").Split('\n').ToArray();
         }
+        public static string OutputLine(this IEnumerable<string> lines, string separator, int indentCount = 0)
+        {
+            return string.Join(separator, OutputLines(lines, indentCount));
+        }
 
         public static string OutputLine(this IEnumerable<string> lines, int indentCount = 0)
         {
-            var separator = Environment.NewLine + new string(IndentChar, indentCount);
-            return string.Join(Environment.NewLine, OutputLines(lines, indentCount));
+            return OutputLine(lines, lines, Environment.NewLine, indentCount);
         }
 
         public static string[] OutputLines(this IEnumerable<string> lines, int indentCount = 0)
