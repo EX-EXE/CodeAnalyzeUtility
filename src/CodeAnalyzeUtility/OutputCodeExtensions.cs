@@ -13,6 +13,12 @@ namespace CodeAnalyzeUtility
         {
             return lines.Replace("\r\n", "\n").Split('\n').ToArray();
         }
+
+        public static string[] OutputLines(this IEnumerable<string> lines, int indentCount = 0)
+        {
+            return lines.Select(x => $"{new string(IndentChar, indentCount)}{x}").ToArray();
+        }
+
         public static string OutputLine(this IEnumerable<string> lines, string separator, int indentCount = 0)
         {
             return string.Join(separator, OutputLines(lines, indentCount));
@@ -20,12 +26,7 @@ namespace CodeAnalyzeUtility
 
         public static string OutputLine(this IEnumerable<string> lines, int indentCount = 0)
         {
-            return OutputLine(lines, lines, Environment.NewLine, indentCount);
-        }
-
-        public static string[] OutputLines(this IEnumerable<string> lines, int indentCount = 0)
-        {
-            return lines.Select(x => $"{new string(IndentChar, indentCount)}{x}").ToArray();
+            return OutputLine(lines, Environment.NewLine, indentCount);
         }
 
         public static string[] OutputIfStatement(this string ifStatement, IEnumerable<string> thenSection, IEnumerable<string> elseSection)
