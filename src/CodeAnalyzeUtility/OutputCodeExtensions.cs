@@ -60,6 +60,19 @@ namespace CodeAnalyzeUtility
             }
             return builder.ToArray();
         }
+        public static string[] OutputIfStatement(this string ifStatement, IEnumerable<string> thenSection)
+        {
+            return OutputIfStatement(ifStatement, thenSection, Array.Empty<string>());
+        }
+        public static string[] OutputIfStatement(this string ifStatement, string thenSection, string elseSection)
+        {
+            return OutputIfStatement(ifStatement, new[] { thenSection }, new[] { elseSection });
+        }
+        public static string[] OutputIfStatement(this string ifStatement, string thenSection)
+        {
+            return OutputIfStatement(ifStatement, new[] { thenSection }, Array.Empty<string>());
+        }
+
         public static string[] OutputStatement(this IEnumerable<string> lines)
         {
             var builder = new List<string>();
