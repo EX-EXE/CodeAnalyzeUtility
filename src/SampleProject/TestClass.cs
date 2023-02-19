@@ -17,7 +17,7 @@ namespace CodeProject
             public int intProperty { get; private set; } = int.MaxValue;
         }
 
-
+        public void Method(string a, ref int b, out long c) { }
 
         public interface ITestInterface { }
 

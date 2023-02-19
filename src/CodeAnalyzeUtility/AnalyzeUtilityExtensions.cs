@@ -44,15 +44,38 @@ namespace CodeAnalyzeUtility
                 _ => string.Empty,
             };
         }
-
-        internal static (bool,string) GetDefaultValue(this ImmutableArray<SyntaxReference> syntaxReferences)
+        internal static string ToRefString<T>(this T symbol) where T : ISymbol
         {
-            foreach(var syntaxReference in syntaxReferences)
+            if (symbol is IPropertySymbol propertySymbol)
+            {
+                return propertySymbol.RefKind.ToRefString();
+            }
+            else if (symbol is IParameterSymbol parameterSymbol)
+            {
+                return parameterSymbol.RefKind.ToRefString();
+            }
+            return string.Empty;
+        }
+        internal static string ToRefString(this RefKind refKind)
+        {
+            return refKind switch
+            {
+                RefKind.Ref => "ref",
+                RefKind.Out => "out",
+                RefKind.In => "in",
+                //RefKind.RefReadOnly => "ref readonly",
+                _ => string.Empty,
+            };
+        }
+
+        internal static (bool, string) GetDefaultValue(this ImmutableArray<SyntaxReference> syntaxReferences)
+        {
+            foreach (var syntaxReference in syntaxReferences)
             {
                 var syntax = syntaxReference.GetSyntax();
-                if(syntax != null)
+                if (syntax != null)
                 {
-                    foreach(var equalsValueClauseSyntax in syntax.DescendantNodes().OfType<EqualsValueClauseSyntax>())
+                    foreach (var equalsValueClauseSyntax in syntax.DescendantNodes().OfType<EqualsValueClauseSyntax>())
                     {
                         return (true, equalsValueClauseSyntax.Value.ToFullString());
                     }
