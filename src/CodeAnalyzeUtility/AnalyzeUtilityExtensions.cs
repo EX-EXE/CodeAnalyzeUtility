@@ -54,6 +54,10 @@ namespace CodeAnalyzeUtility
             {
                 return parameterSymbol.RefKind.ToRefString();
             }
+            else if (symbol is IMethodSymbol methodSymbol)
+            {
+                return methodSymbol.RefKind.ToRefString();
+            }
             return string.Empty;
         }
         internal static string ToRefString(this RefKind refKind)
